@@ -6,14 +6,15 @@ My changes on top of RetroAdapter to make it work with my microcontroller. This
 is basically the RetroAdapter version 2.1a with some tweaks in the Makefile, an
 updated usbdrv, and many modules disabled.
 
-Background: For a long while I wanted to build a Sega Mega Drive controller
-adapter to USB. Fortunately, Paul Qureshi wrote have created RetroAdapter and
-published all the source and schematics on his website
-<http://denki.world3.net/retro_v2.html>. This adapter uses an ATmega 8-bit
-microcontroller with almost no extra components (only a few resistors, a few
-capacitors, a couple of Zener diodes, a crystal).
+Background:
+For a long while I wanted to build a Sega Mega Drive controller adapter to USB.
+Fortunately, Paul Qureshi wrote have created RetroAdapter and published all the
+source and schematics on his website <http://denki.world3.net/retro_v2.html>.
+This adapter uses an ATmega 8-bit microcontroller with almost no extra
+components (only a few resistors, a few capacitors, a couple of Zener diodes, a
+crystal).
 
-He used ATmega168, which is more powerful than ATmega8 that I already have. In
-order to make it compile and make it fit in 8KB (or 6KB + bootloader), I had to
-make small changes to the RetroAdapter code. These changes are saved in this
+He used ATmega168, which is more powerful than the ATmega8 that I already have.
+In order to make it compile and make it fit in 8KB (or 6KB + bootloader), I had
+to make small changes to the RetroAdapter code. These changes are saved in this
 repository.
