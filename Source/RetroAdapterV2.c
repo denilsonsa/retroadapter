@@ -71,7 +71,7 @@ void HardwareInit()
 void ReadController(uchar id)
 {
 	uchar	skipdb9flag = 0;	// don't read DB9 when shared lines are in use by DB15
-	uchar	pcinton	= 0;
+	/* uchar	pcinton	= 0; */
 
 	reportBuffer.y = reportBuffer.x = reportBuffer.b1 = reportBuffer.b2 = 0;
 	reportBuffer.rx = reportBuffer.ry = 0;
@@ -207,8 +207,8 @@ void ReadController(uchar id)
 	}
 	*/
 
-	// TODO: Fix compile error on atmega8.
-	//if (!pcinton) PCICR	&= ~(1<<PCIE0);
+	// Only used by amiga_mouse.
+	/* if (!pcinton) PCICR	&= ~(1<<PCIE0); */
 }
 
 /* ------------------------------------------------------------------------- */
