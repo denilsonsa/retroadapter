@@ -39,7 +39,7 @@ uchar ReverseByte(uchar byte)
 	return temp;
 }
 
-void ReadFamicom(report_t *reportBuffer, reportMouse_t *reportBufferMouse)
+void ReadFamicom(report_t *reportBuffer/*, reportMouse_t *reportBufferMouse*/)
 {
 	static	uchar	vbmode = 0;			// Virtual Boy mode flag
 
@@ -130,6 +130,7 @@ void ReadFamicom(report_t *reportBuffer, reportMouse_t *reportBufferMouse)
 	}
 	else if ((byte1 & 0xf0) == 0x80)	// SNES Mouse
 	{
+		/*
 		hidMode = HIDM_MOUSE;
 
 		temp = ReverseByte(byte2) & 0x7f;
@@ -143,6 +144,7 @@ void ReadFamicom(report_t *reportBuffer, reportMouse_t *reportBufferMouse)
 
 		if (byte1 & (1<<1)) reportBufferMouse->b1 |= (1<<0);		// LMB
 		if (byte1 & (1<<0)) reportBufferMouse->b1 |= (1<<1);		// RMB
+		*/
 	}
 	else vbmode = 0;
 

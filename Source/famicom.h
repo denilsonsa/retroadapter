@@ -7,6 +7,6 @@
 #define	FAM_LAT	(1<<7)
 #define	FAM_CLK	(1<<0)
 
-void ReadFamicom(report_t *reportBuffer, reportMouse_t *reportBufferMouse);
+void ReadFamicom(report_t *reportBuffer/*, reportMouse_t *reportBufferMouse*/);
 uchar FamicomRead(void);
 uchar FamicomReadByte(void);

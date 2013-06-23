@@ -269,6 +269,7 @@ PROGMEM char usbHidReportDescriptor2P[160] = {
 
 /* ----- HID Descriptor Mouse ------------------------------------------------------------------ */
 
+/*
 #define	usbHidReportDescriptorMouseLength	100
 
 PROGMEM char usbHidReportDescriptorMouse[100] = {
@@ -332,3 +333,4 @@ PROGMEM char usbHidReportDescriptorMouse[100] = {
 	//0x81,0x03,			// Input (Data, Var, Abs)
 	0xC0,			// End_Collection
 };
+*/

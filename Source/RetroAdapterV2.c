@@ -39,7 +39,7 @@
 static	void*			usbDeviceDescriptorAddress;
 static	int				usbDeviceDescriptorLength;
 static	report_t		reportBuffer;
-static	reportMouse_t	reportBufferMouse;
+/* static	reportMouse_t	reportBufferMouse; */
 void*	reportBufferAddress;
 uchar	reportBufferLength;
 uchar	hidMode;
@@ -78,9 +78,11 @@ void ReadController(uchar id)
 	reportBuffer.hat = -1;
 	reportBuffer.reportid = id;
 
+	/*
 	reportBufferMouse.x = reportBufferMouse.y = reportBufferMouse.w = 0;
 	reportBufferMouse.b1 = 0;
 	reportBufferMouse.reportid = id;
+	*/
 
 	hidMode = HIDM_1P;
 	//ReadDreamcast(&reportBuffer);
@@ -111,15 +113,17 @@ void ReadController(uchar id)
 				/* ReadPCFX(&reportBuffer); */
 				break;
 
+				/*
 				case ((1<<2)|(1<<3)):		// LHHL
 				hidMode = HIDM_MOUSE;
 				pcinton = 1;
 				if (id == 1)
 				{
-					/* ReadAmigaMouse(&reportBufferMouse); */
+					ReadAmigaMouse(&reportBufferMouse);
 					skipdb9flag = 1;
 				}
 				break;
+				*/
 				
 				case ((1<<3)|(1<<1)):		// LHLH
 				/* ReadCD32(&reportBuffer); */
@@ -183,7 +187,7 @@ void ReadController(uchar id)
 			else
 			{
 				// Famicom
-				ReadFamicom(&reportBuffer, &reportBufferMouse);
+				ReadFamicom(&reportBuffer/*, &reportBufferMouse*/);
 			}
 		}
 		else
@@ -193,6 +197,7 @@ void ReadController(uchar id)
 	}
 
 	// Mouse mode joystick support
+	/*
 	if ((id == 2) & (hidMode == HIDM_MOUSE))
 	{
 		reportBufferMouse.b1 = reportBuffer.x;
@@ -200,6 +205,7 @@ void ReadController(uchar id)
 		reportBufferMouse.y = reportBuffer.b1;
 		reportBufferMouse.w = reportBuffer.b2;
 	}
+	*/
 
 	// TODO: Fix compile error on atmega8.
 	//if (!pcinton) PCICR	&= ~(1<<PCIE0);
@@ -231,6 +237,7 @@ void SetHIDMode()
 			reportBufferAddress = &reportBuffer;
 			reportBufferLength = sizeof(reportBuffer);
 			break;
+		/*
 		case HIDM_MOUSE:
 			usbDeviceDescriptorAddress = usbDescriptorDeviceMouse;
 			usbDeviceDescriptorLength = sizeof(usbDescriptorDeviceMouse);
@@ -240,6 +247,7 @@ void SetHIDMode()
 			reportBufferAddress = &reportBufferMouse;
 			reportBufferLength = sizeof(reportBufferMouse);
 			break;
+		*/
 	}
 	usbDescriptorConfiguration[25] = hidReportDescriptorLength;
 
