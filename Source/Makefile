@@ -6,15 +6,16 @@
 PROJECT = RetroAdapterV2
 MCU = atmega8
 TARGET = RetroAdapterV2.elf
-CC = avr-gcc.exe
+CC = avr-gcc
 
 ## Options common to compile, link and assembly rules
 COMMON = -mmcu=$(MCU)
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -std=gnu99  -DF_CPU=12000000UL -O1 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+CFLAGS += -Wall -gdwarf-2 -std=gnu99  -DF_CPU=12000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d 
+CFLAGS += -I./ -Iusbdrv/
 
 ## Assembly specific flags
 ASMFLAGS = $(COMMON)
@@ -44,13 +45,13 @@ LINKONLYOBJECTS =
 all: $(TARGET) RetroAdapterV2.hex RetroAdapterV2.eep RetroAdapterV2.lss size
 
 ## Compile
-usbdrvasm.o: ../usbdrv/usbdrvasm.S
+usbdrvasm.o: usbdrv/usbdrvasm.S
 	$(CC) $(INCLUDES) $(ASMFLAGS) -c  $<
 
-RetroAdapterV2.o: ../RetroAdapterV2.c
+RetroAdapterV2.o: RetroAdapterV2.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-usbdrv.o: ../usbdrv/usbdrv.c
+usbdrv.o: usbdrv/usbdrv.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
@@ -71,7 +72,7 @@ size: ${TARGET}
 	@avr-size -C --mcu=${MCU} ${TARGET}
 
 ## Clean target
-.PHONY: clean
+.PHONY: clean size
 clean:
 	-rm -rf $(OBJECTS) RetroAdapterV2.elf dep/* RetroAdapterV2.hex RetroAdapterV2.eep RetroAdapterV2.lss RetroAdapterV2.map
 

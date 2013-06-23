@@ -201,7 +201,8 @@ void ReadController(uchar id)
 		reportBufferMouse.w = reportBuffer.b2;
 	}
 
-	if (!pcinton) PCICR	&= ~(1<<PCIE0);
+	// TODO: Fix compile error on atmega8.
+	//if (!pcinton) PCICR	&= ~(1<<PCIE0);
 }
 
 /* ------------------------------------------------------------------------- */
