@@ -14,7 +14,6 @@ COMMON = -mmcu=$(MCU)
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
 CFLAGS += -Wall -gdwarf-2 -std=gnu99  -DF_CPU=12000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d 
 CFLAGS += -I./ -Iusbdrv/
 
 ## Assembly specific flags
@@ -26,6 +25,16 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 LDFLAGS = $(COMMON)
 LDFLAGS +=  -Wl,-Map=RetroAdapterV2.map
 
+#LDFLAGS += $(GENTOO_LD_PATH_WORKAROUND)
+#GENTOO_LD_PATH_WORKAROUND = -L/usr/i686-pc-linux-gnu/avr/lib
+#GENTOO_LD_PATH_WORKAROUND = -L/usr/x86_64-pc-linux-gnu/avr/lib
+#
+# See:
+# http://bugs.gentoo.org/show_bug.cgi?id=147155
+# http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&p=336170
+#
+# ln -snf ../../lib/binutils/avr/2.*/ldscripts/ /usr/avr/lib/ldscripts
+
 
 ## Intel Hex file production flags
 HEX_FLASH_FLAGS = -R .eeprom
@@ -36,27 +45,31 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Objects that must be built in order to link
-OBJECTS = RetroAdapterV2.o usbdrvasm.o usbdrv.o 
-
-## Objects explicitly added by the user
-LINKONLYOBJECTS = 
+OBJECTS = usbdrvasm.o usbdrv.o 
 
 ## Build
 all: $(TARGET) RetroAdapterV2.hex RetroAdapterV2.eep RetroAdapterV2.lss size
 
 ## Compile
 usbdrvasm.o: usbdrv/usbdrvasm.S
-	$(CC) $(INCLUDES) $(ASMFLAGS) -c  $<
-
-RetroAdapterV2.o: RetroAdapterV2.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+	$(CC) $(INCLUDES) $(ASMFLAGS) -c -o $@ $<
 
 usbdrv.o: usbdrv/usbdrv.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+	$(CC) $(INCLUDES) $(CFLAGS) -c -o $@ $<
 
-##Link
-$(TARGET): $(OBJECTS)
-	 $(CC) $(LDFLAGS) $(OBJECTS) $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
+amiga_m_asm.o: amiga_m_asm.S
+	$(CC) $(INCLUDES) $(ASMFLAGS) -c -o $@ $<
+dreamcast_asm.o: dreamcast_asm.S
+	$(CC) $(INCLUDES) $(ASMFLAGS) -c -o $@ $<
+n64gc_asm.o: n64gc_asm.S
+	$(CC) $(INCLUDES) $(ASMFLAGS) -c -o $@ $<
+
+##Compile and Link
+# Removed from the firmware: amiga_mouse.c analogue.c
+$(TARGET): $(OBJECTS) dreamcast_asm.o n64gc_asm.o RetroAdapterV2.c 3do.c atari_driving.c cd32.c direct.c dreamcast.c dualdb9.c famicom.c n64gc.c pc-engine.c pc-fx.c psx.c RetroAdapterV2.c saturn.c sega_paddle.c timers.c
+	 $(CC) $(CFLAGS) $(INCLUDES) $(LDFLAGS) \
+		 -o $(TARGET) \
+		 $^
 
 %.hex: $(TARGET)
 	avr-objcopy -O ihex $(HEX_FLASH_FLAGS)  $< $@
@@ -68,15 +81,15 @@ $(TARGET): $(OBJECTS)
 	avr-objdump -h -S $< > $@
 
 size: ${TARGET}
-	@echo
-	@avr-size -C --mcu=${MCU} ${TARGET}
+	avr-size --format=sysv --radix=10 $(TARGET)
+
+size-detailed: ${TARGET}
+	@avr-nm -f bsd -t d -A --size-sort $(TARGET) | \
+		sed 's/^\([^:]\+\):\([0-9a-fA-F]\+\) \(.\) \(.\+\)$$/\2 \3 \4 [\1]/' | \
+		sort -n
+
 
 ## Clean target
 .PHONY: clean size
 clean:
-	-rm -rf $(OBJECTS) RetroAdapterV2.elf dep/* RetroAdapterV2.hex RetroAdapterV2.eep RetroAdapterV2.lss RetroAdapterV2.map
-
-
-## Other dependencies
--include $(shell mkdir dep 2>/dev/null) $(wildcard dep/*)
-
+	-rm -rf $(OBJECTS) RetroAdapterV2.elf RetroAdapterV2.hex RetroAdapterV2.eep RetroAdapterV2.lss RetroAdapterV2.map

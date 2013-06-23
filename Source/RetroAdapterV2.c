@@ -26,10 +26,10 @@
 #include "dreamcast.h"
 #include "n64gc.h"
 #include "atari_driving.h"
-#include "analogue.h"
+/* #include "analogue.h" */
 #include "dualdb9.h"
 #include "timers.h"
-#include "amiga_mouse.h"
+/* #include "amiga_mouse.h" */
 #include "sega_paddle.h"
 #include "3do.h"
 #include "cd32.h"
@@ -116,7 +116,7 @@ void ReadController(uchar id)
 				pcinton = 1;
 				if (id == 1)
 				{
-					ReadAmigaMouse(&reportBufferMouse);
+					/* ReadAmigaMouse(&reportBufferMouse); */
 					skipdb9flag = 1;
 				}
 				break;
@@ -165,7 +165,7 @@ void ReadController(uchar id)
 	}
 	else if (!(PINC & (1<<3)))		// Key 1 = H, DB15-10 = L
 	{
-		ReadAnalogue(&reportBuffer, id);
+		/* ReadAnalogue(&reportBuffer, id); */
 		skipdb9flag = 1;
 	}
 	else ReadDB15(&reportBuffer);	// Key 1 = H, DB15-10 = H
