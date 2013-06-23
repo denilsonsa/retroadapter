@@ -22,18 +22,18 @@
 #include "saturn.h"
 #include "psx.h"
 #include "famicom.h"
-#include "pc-engine.h"
+/* #include "pc-engine.h" */
 #include "dreamcast.h"
 #include "n64gc.h"
-#include "atari_driving.h"
+/* #include "atari_driving.h" */
 /* #include "analogue.h" */
 #include "dualdb9.h"
 #include "timers.h"
 /* #include "amiga_mouse.h" */
-#include "sega_paddle.h"
-#include "3do.h"
-#include "cd32.h"
-#include "pc-fx.h"
+/* #include "sega_paddle.h" */
+/* #include "3do.h" */
+/* #include "cd32.h" */
+/* #include "pc-fx.h" */
 #include "dreamcast.h"
 
 static	void*			usbDeviceDescriptorAddress;
@@ -103,12 +103,12 @@ void ReadController(uchar id)
 				break;
 				
 				case ((1<<1)|(1<<2)):		// LLHH
-				ReadPCE(&reportBuffer);
+				/* ReadPCE(&reportBuffer); */
 				skipdb9flag = 1;
 				break;
 				
 				case (1<<2):				// LLHL
-				ReadPCFX(&reportBuffer);
+				/* ReadPCFX(&reportBuffer); */
 				break;
 
 				case ((1<<2)|(1<<3)):		// LHHL
@@ -122,7 +122,7 @@ void ReadController(uchar id)
 				break;
 				
 				case ((1<<3)|(1<<1)):		// LHLH
-				ReadCD32(&reportBuffer);
+				/* ReadCD32(&reportBuffer); */
 				skipdb9flag = 1;
 				break;
 
@@ -130,15 +130,15 @@ void ReadController(uchar id)
 				switch (PINB & 0b110)
 				{
 					case 0b110:				// HH
-					ReadAtariDriving(&reportBuffer);
+					/* ReadAtariDriving(&reportBuffer); */
 					break;
 
 					case 0b000:				// LL
-					Read3DO(&reportBuffer);
+					/* Read3DO(&reportBuffer); */
 					break;
 
 					case 0b010:				// LH
-					ReadSegaPaddle(&reportBuffer);
+					/* ReadSegaPaddle(&reportBuffer); */
 					break;
 				}
 				skipdb9flag = 1;

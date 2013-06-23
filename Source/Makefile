@@ -10,20 +10,24 @@ CC = avr-gcc
 
 ## Options common to compile, link and assembly rules
 COMMON = -mmcu=$(MCU)
+INCLUDES = -I./ -Iusbdrv/
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -std=gnu99  -DF_CPU=12000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-CFLAGS += -I./ -Iusbdrv/
+CFLAGS += -Wall -std=gnu99 -DF_CPU=12000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+# Compiler fine-tuning for saving a few bytes.
+CFLAGS += -fno-move-loop-invariants -fno-tree-scev-cprop
 
 ## Assembly specific flags
 ASMFLAGS = $(COMMON)
 ASMFLAGS += $(CFLAGS)
-ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
+ASMFLAGS += -x assembler-with-cpp
 
 ## Linker flags
 LDFLAGS = $(COMMON)
 LDFLAGS +=  -Wl,-Map=RetroAdapterV2.map
+# Replace CALL statements with RCALL where possible to save a few bytes.
+LDFLAGS += -Wl,--relax
 
 #LDFLAGS += $(GENTOO_LD_PATH_WORKAROUND)
 #GENTOO_LD_PATH_WORKAROUND = -L/usr/i686-pc-linux-gnu/avr/lib
@@ -65,8 +69,16 @@ n64gc_asm.o: n64gc_asm.S
 	$(CC) $(INCLUDES) $(ASMFLAGS) -c -o $@ $<
 
 ##Compile and Link
-# Removed from the firmware: amiga_mouse.c analogue.c
-$(TARGET): $(OBJECTS) dreamcast_asm.o n64gc_asm.o RetroAdapterV2.c 3do.c atari_driving.c cd32.c direct.c dreamcast.c dualdb9.c famicom.c n64gc.c pc-engine.c pc-fx.c psx.c RetroAdapterV2.c saturn.c sega_paddle.c timers.c
+# Compile all *.c files at once, allowing for better optimizations.
+# Note: -combine has been removed in GCC 4.6, in favor of LTO
+#       http://gcc.gnu.org/bugzilla/show_bug.cgi?id=29171#c7
+#       http://gcc.gnu.org/wiki/LinkTimeOptimization
+#
+# Removed from the firmware because of compile error:
+#   amiga_mouse.c analogue.c
+# Removed from the firmware because I'm not interested in them:
+#   3do.c atari_driving.c cd32.c pc-engine.c pc-fx.c sega_paddle.c
+$(TARGET): $(OBJECTS) dreamcast_asm.o n64gc_asm.o RetroAdapterV2.c direct.c dreamcast.c dualdb9.c famicom.c n64gc.c psx.c RetroAdapterV2.c saturn.c timers.c
 	 $(CC) $(CFLAGS) $(INCLUDES) $(LDFLAGS) \
 		 -o $(TARGET) \
 		 $^
