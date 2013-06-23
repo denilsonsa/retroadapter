@@ -1,0 +1,117 @@
+﻿table.vis {
+	border-width: 1px 1px 1px 1px;
+	border-spacing: 2px;
+	border-color: white white white white;
+	border-collapse: collapse;
+	border-style: solid solid solid;
+}
+table.vis th {
+	border-width: 1px 1px 1px 1px;
+	padding: 2px 2px 2px 2px;
+	border-style: inset inset inset inset;
+	border-color: white white white white;
+	border-style: solid solid solid;
+}
+table.vis td {
+	border-width: 1px 1px 1px 1px;
+	padding: 2px 2px 2px 2px;
+	border-style: inset inset inset inset;
+	border-color: white white white white;
+	border-style: solid solid solid;
+}
+
+table.gridlines {
+	border-style: hidden hidden hidden hidden;
+	border-collapse: collapse;
+	table-layout: fixed;
+	font-family: monospace;
+}
+
+table.gridlines img {
+	vertical-align: middle;
+}
+
+table.gridlines tr.toprow {
+	border-bottom: 2px solid white;
+}
+
+table.gridlines td {
+	border-right: 2px solid white;
+	padding: 2px 2px 2px 2px;
+}
+
+table.gridlines td.split {
+	border-right: hidden;
+	width: 50px;
+}
+
+tr.tr1 {
+	background-color: #000000;
+}
+tr.tr2 {
+	background-color: #222222;
+}
+
+tr.tr3 {
+	background-color: #444444;
+}
+
+td.fam {
+	background-color: #46191C;
+}
+
+td.n64 {
+	background-color: #069330;
+}
+
+td.gc {
+	background-color: #29568D;
+}
+
+td.dc {
+	background-color: #C13626;
+}
+
+td.sat {
+	background-color: #444444;
+}
+
+td.psx {
+	background-color: #13007C;
+}
+
+td.pce {
+	background-color: #8E1D27;
+}
+
+td.pcfx {
+	background-color: #4C4C99;
+}
+
+td.neo {
+	background-color: #8E1D27;
+}
+
+td.usb {
+	background-color: #005699;
+}
+
+td.driving {
+	background-color: #cc6600;
+}
+
+td.plus4 {
+	background-color: #006600;
+}
+
+td.beeb {
+	background-color: #816d55;
+}
+
+td.twop {
+	background-color: #444444;
+}
+
+td.alog {
+	background-color: #440000;
+}

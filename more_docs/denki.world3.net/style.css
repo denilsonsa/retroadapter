@@ -1,0 +1,119 @@
+﻿body {
+	color: #eeeeee;
+	background: black;
+	font-family: Verdana, Arial, Verdana, sans-serif;
+	font-size: 10pt;
+	line-height: 1.4em;
+}
+
+div.content_box {
+	margin-left: 205px;
+	padding: 5px;
+	/* font-family: Verdana, helvetica, arial, sans-serif; */
+}
+
+div.content_box_index {
+	/*padding: 5px; */
+}
+
+div.test {
+	background: #000077;
+}
+
+div.indexcentre {
+	text-align: center;
+	font-size: 1.3em;
+}
+
+div.titleheader {
+	font-family: "Droid Sans Mono", Consolas, monospace;
+	text-align: center;
+	background: #000077;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	font-size: 3em;
+	display: block;
+}
+
+div.indexmenu {
+	font-family: Meiryo, "メイリオ", "Lucida Grande", Verdana, helvetica, arial, sans-serif;
+	font-size: 16px;
+}
+
+.section_header {
+	font-size: 2.5em;
+	/*font-weight: bold;*/
+	font-family: 'Century Gothic', Futura, AppleGothic, "Droid Sans", sans-serif;
+	margin-bottom: 0.3em;
+	margin-top: 2em;
+	padding-bottom: 0.3em;
+}
+
+/* --- Centred <pre> sections ----------------------------------------------------------------- */
+
+.centredblock_outer {
+	text-align: center;
+}
+
+.centredblock_inner {
+	text-align: left;
+	display: table;
+	margin: 0 auto;
+}
+
+/* --- Search engine text for images ---------------------------------------------------------- */
+
+span.logo_hidden_text {
+	display: none;
+}
+
+hr {
+	color: white;
+	background-color: white;
+	height: 2px;
+}
+
+a:link {
+	color: #00BB00;
+}
+a:visited {
+	color: #007700;
+}
+
+table.thumbnails {
+	margin: auto;
+}
+
+td.thumbnails {
+	border-color: #777777;
+	border-width: 1px;
+	border-style: solid;
+	background: #222222;
+	padding: 3px;
+}
+
+div.thumb_bar {
+	background-image:url('img/bar_texture.png');
+	height: 24px;
+	padding-left: 5px;
+	color: #FFCC33;
+	font-weight: bold;
+	vertical-align: text-bottom;
+	background-repeat: repeat-x;
+	padding-top: 6px;
+}
+
+a.rollover {
+	display: block;
+	width: 634px;
+	height: 58px;
+	text-decoration: none;
+	background: url("img/retroadapter_logo_hfg_r.png");
+}
+a.rollover:hover {
+	background-position: -634px 0;
+}
+
+.tgreen {
+	color: #009900;
+}

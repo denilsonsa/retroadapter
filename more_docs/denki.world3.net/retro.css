@@ -1,0 +1,38 @@
+﻿p {
+	margin-bottom: 1em;
+}
+
+.page_header {
+	text-align: center;
+	font-size: 2.5em;
+	font-weight: bold;
+}
+
+hr {
+	color: white;
+	background-color: white;
+	border-color: white;
+	height: 2px;
+	border: none;
+}
+
+sup {
+	vertical-align: 0;
+	position: relative;
+	bottom: 1.2ex;
+	font-size: 0.6em;
+}
+a:link {
+	color: #00BB00;
+}
+a:visited {
+	color: #007700;
+}
+
+h3 {
+	font-size: 1.25em;
+}
+
+h2 {
+	font-size: 1.5em;
+}
