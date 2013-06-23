@@ -1,4 +1,4 @@
-﻿                             Retro Adapter V2 2.0
+                             Retro Adapter V2 2.0
                                        
                          Copyright 2010 Paul Qureshi
                                        
