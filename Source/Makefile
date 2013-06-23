@@ -14,7 +14,7 @@ INCLUDES = -I./ -Iusbdrv/
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -std=gnu99 -DF_CPU=12000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+CFLAGS += -Wall -std=gnu99 -DF_CPU=12000000UL -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -pipe
 # Compiler fine-tuning for saving a few bytes.
 CFLAGS += -fno-move-loop-invariants -fno-tree-scev-cprop
 
