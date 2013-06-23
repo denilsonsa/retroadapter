@@ -18,3 +18,6 @@ He used ATmega168, which is more powerful than the ATmega8 that I already have.
 In order to make it compile and make it fit in 8KB (or 6KB + bootloader), I had
 to make small changes to the RetroAdapter code. These changes are saved in this
 repository.
+
+The Makefile changes mostly come from my previous project:
+http://bitbucket.org/denilsonsa/atmega8-magnetometer-usb-mouse/src/tip/firmware/Makefile
