@@ -88,9 +88,13 @@ void ReadController(uchar id)
 	//ReadDreamcast(&reportBuffer);
 
 	// Check 15 pin connector
-	if (!(PINC & (1<<5)))			// Key 1 = L
+	// Hard-coding this to LOW.
+	// if (!(PINC & (1<<5)))			// Key 1 = L
+	if (1)			// Key 1 = L
 	{
-		if (!(PINC & (1<<4)))			// Key 2 = L
+		// Hard-coding this to HIGH.
+		// if (!(PINC & (1<<4)))			// Key 2 = L
+		if (0)			// Key 2 = L
 		{
 			switch (PINC & 0b00011110)
 			{
@@ -151,7 +155,9 @@ void ReadController(uchar id)
 		}
 		else							// Key 2 = H
 		{
-			if (!(PINC & (1<<3)))
+			// Hard-coding this to HIGH.
+			// if (!(PINC & (1<<3)))
+			if (0)
 			{
 				ReadTimers(&reportBuffer);		// Key 1 = H, DB15-10 = L, Timer based
 				skipdb9flag = 1;
