@@ -13,3 +13,11 @@ To program with avrdude use the following command line:
 > avrdude -c <your programmer> -p atmega168 -U lfuse:w:0xef:m -U hfuse:w:0xdf:m -U efuse:w:0xf8:m
 
 Ignore warnings about the efuse not being set properly, it is a limitation of avrdude.
+
+
+Fuse settings for the ATmega8
+=============================
+
+low:   0x9f
+high:  0xc1 (without bootloader)
+high:  0xc0 (with bootloader)

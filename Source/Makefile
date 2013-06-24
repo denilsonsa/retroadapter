@@ -40,6 +40,12 @@ LDFLAGS += -Wl,--relax
 # ln -snf ../../lib/binutils/avr/2.*/ldscripts/ /usr/avr/lib/ldscripts
 
 
+AVRDUDE = avrdude
+AVRDUDE_PARAMS = -c usbasp
+AVRDUDE_PARAMS += -p $(MCU)
+AVRDUDE_PARAMS_FUSE = -U hfuse:w:0xC1:m -U lfuse:w:0x9F:m
+
+
 ## Intel Hex file production flags
 HEX_FLASH_FLAGS = -R .eeprom
 
@@ -101,7 +107,30 @@ size-detailed: ${TARGET}
 		sort -n
 
 
+writeflash:
+	$(AVRDUDE) $(AVRDUDE_PARAMS) \
+		-U flash:w:RetroAdapterV2.hex:i
+
+writefuse:
+	$(AVRDUDE) $(AVRDUDE_PARAMS) \
+		$(AVRDUDE_PARAMS_FUSE)
+
+erase:
+	$(AVRDUDE) $(AVRDUDE_PARAMS) \
+		-e
+dump:
+	$(AVRDUDE) $(AVRDUDE_PARAMS) \
+		-U flash:r:flash.dump:i \
+		-U eeprom:r:eeprom.dump:i \
+		-U hfuse:r:hfuse.dump:b \
+		-U lfuse:r:lfuse.dump:b \
+		-U lock:r:lock.dump:b \
+		-U signature:r:signature.dump:h
+# efuse is available on newer AVR microcontrollers
+#		-U efuse:r:efuse.dump:b
+
+
 ## Clean target
-.PHONY: clean size
+.PHONY: all clean size writeflash writefuse erase dump
 clean:
 	-rm -rf $(OBJECTS) RetroAdapterV2.elf RetroAdapterV2.hex RetroAdapterV2.eep RetroAdapterV2.lss RetroAdapterV2.map

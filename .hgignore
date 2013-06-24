@@ -40,4 +40,4 @@ Thumbs.db
 *.map
 *.sym
 ## Dumps from avrdude:
-#*.dump
+*.dump
