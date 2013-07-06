@@ -81,7 +81,7 @@ void Read2ndDirect(report_t *reportBuffer)
 			if (!(PINB & (1<<5))) reportBuffer->b1 |= (1<<5);	// Z
 			if (!(PINB & (1<<4))) reportBuffer->b1 |= (1<<4);	// Y
 			if (!(PINB & (1<<3))) reportBuffer->b1 |= (1<<3);	// X
-			if (!(PINB & (1<<2))) reportBuffer->b1 |= (1<<6);	// Mode
+			if (!(PINB & (1<<2))) reportBuffer->b1 |= (1<<7);	// Mode
 		}
 	}
 }
