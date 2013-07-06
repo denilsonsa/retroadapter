@@ -42,7 +42,7 @@ these macros are defined, the boot loader usees them.
 /* This is the port where the USB bus is connected. When you configure it to
  * "B", the registers PORTB, PINB and DDRB will be used.
  */
-#define USB_CFG_DMINUS_BIT      4
+#define USB_CFG_DMINUS_BIT      1
 /* This is the bit number in USB_CFG_IOPORT where the USB D- line is connected.
  * This may be any bit in the port.
  */
@@ -77,7 +77,7 @@ these macros are defined, the boot loader usees them.
 /* ---------------------- feature / code size options ---------------------- */
 /* ------------------------------------------------------------------------- */
 
-#define HAVE_EEPROM_PAGED_ACCESS    1
+#define HAVE_EEPROM_PAGED_ACCESS    0
 /* If HAVE_EEPROM_PAGED_ACCESS is defined to 1, page mode access to EEPROM is
  * compiled in. Whether page mode or byte mode access is used by AVRDUDE
  * depends on the target device. Page mode is only used if the device supports
@@ -131,27 +131,26 @@ these macros are defined, the boot loader usees them.
  */
 
 #ifndef __ASSEMBLER__   /* assembler cannot parse function definitions */
-
-#define JUMPER_BIT  7   /* jumper is connected to this bit in port D, active low */
-
-#ifndef MCUCSR          /* compatibility between ATMega8 and ATMega88 */
-#   define MCUCSR   MCUSR
-#endif
+#include <util/delay.h>
 
 static inline void  bootLoaderInit(void)
 {
-    PORTD |= (1 << JUMPER_BIT);     /* activate pull-up */
-    if(!(MCUCSR & (1 << EXTRF)))    /* If this was not an external reset, ignore */
-        leaveBootloader();
-    MCUCSR = 0;                     /* clear all reset flags for next time */
+	DDRD	&= ~(1<<6);		// Mega Drive P1 button B
+    PORTD	|= (1<<6);		// pull up
+
+	DDRC	&= ~(1<<7);		// Mega Drive P2 button B
+	PORTC	|= (1<<7);		// pull up
+
+	_delay_us(10);  /* wait for levels to stabilize */
 }
 
 static inline void  bootLoaderExit(void)
 {
     PORTD = 0;                      /* undo bootLoaderInit() changes */
+    PORTC = 0;                      /* undo bootLoaderInit() changes */
 }
 
-#define bootLoaderCondition()   ((PIND & (1 << JUMPER_BIT)) == 0)
+#define bootLoaderCondition()   ( !(PIND & (1<<6)) || !(PINC & (1<<7)) )
 
 #endif /* __ASSEMBLER__ */
 

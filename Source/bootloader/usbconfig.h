@@ -5,7 +5,6 @@
  * Tabsize: 4
  * Copyright: (c) 2005 by OBJECTIVE DEVELOPMENT Software GmbH
  * License: GNU GPL v2 (see License.txt), GNU GPL v3 or proprietary (CommercialLicense.txt)
- * This Revision: $Id$
  */
 
 #ifndef __usbconfig_h_included__
@@ -197,8 +196,8 @@
  * obdev's free shared VID/PID pair. See the file USB-IDs-for-free.txt for
  * details.
  */
-#define USB_CFG_DEVICE_NAME 'U', 'S', 'B', 'a', 's', 'p'
-#define USB_CFG_DEVICE_NAME_LEN 6
+#define USB_CFG_DEVICE_NAME     'R', 'e', 't', 'r', 'o', ' ', 'A', 'd', 'a', 'p', 't', 'e', 'r', ' ', 'U', 'p', 'd', 'a', 't', 'e', ' ', 'M', 'o', 'd', 'e'
+#define USB_CFG_DEVICE_NAME_LEN 25
 /* Same as above for the device name. If you don't want a device name, undefine
  * the macros. See the file USB-IDs-for-free.txt before you assign a name if
  * you use a shared VID/PID.
@@ -301,7 +300,14 @@
 #define USB_CFG_DESCR_PROPS_HID_REPORT              0
 #define USB_CFG_DESCR_PROPS_UNKNOWN                 0
 
-#define usbMsgPtr_t unsigned short  // scalar type yields shortest code
+
+#define usbMsgPtr_t unsigned short
+/* If usbMsgPtr_t is not defined, it defaults to 'uchar *'. We define it to
+ * a scalar type here because gcc generates slightly shorter code for scalar
+ * arithmetics than for pointer arithmetics. Remove this define for backward
+ * type compatibility or define it to an 8 bit type if you use data in RAM only
+ * and all RAM is below 256 bytes (tiny memory model in IAR CC).
+ */
 
 /* ----------------------- Optional MCU Description ------------------------ */
 

@@ -14,14 +14,15 @@
 #     make flash   # to load the boot loader into flash
 #     make lock    # to protect the boot loader from overwriting
 
-F_CPU = 16000000
-DEVICE = atmega168
+F_CPU = 12000000UL
+DEVICE = atmega8
 # BOOTLOADER_ADDRESS is 1800 for 8k devices, 3800 for 16k and 7800 for 32k.
-BOOTLOADER_ADDRESS = 3800
-FUSEOPT = $(FUSEOPT_168)
-LOCKOPT = -U lock:w:0x2f:m
+BOOTLOADER_ADDRESS = 1800
+FUSEOPT = $(FUSEOPT_8)
+#LOCKOPT = -U lock:w:0x2f:m
 
-PROGRAMMER = -c stk500v2 -P avrdoper
+PROGRAMMER = -c usbasp
+#PROGRAMMER = -c stk500v2 -P avrdoper
 # PROGRAMMER contains AVRDUDE options to address your programmer
 
 FUSEOPT_8 = -U hfuse:w:0xc0:m -U lfuse:w:0x9f:m
@@ -106,10 +107,10 @@ CC = avr-gcc
 # Options:
 DEFINES = #-DDEBUG_LEVEL=2
 # Remove the -fno-* options when you use gcc 3, it does not understand them
-CFLAGS = -Wall -Os -fno-move-loop-invariants -fno-tree-scev-cprop -fno-inline-small-functions -I. -mmcu=$(DEVICE) -DF_CPU=$(F_CPU) $(DEFINES)
+CFLAGS = -Wall -Os -fno-move-loop-invariants -fno-tree-scev-cprop -fno-inline-small-functions -I. -I.. -mmcu=$(DEVICE) -DF_CPU=$(F_CPU) $(DEFINES)
 LDFLAGS = -Wl,--relax,--gc-sections -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS)
 
-OBJECTS =  usbdrv/usbdrvasm.o usbdrv/oddebug.o main.o
+OBJECTS =  ../usbdrv/usbdrvasm.o ../usbdrv/oddebug.o main.o
 
 # symbolic targets:
 all: main.hex
@@ -136,26 +137,26 @@ readflash:
 fuse:
 	$(AVRDUDE) $(FUSEOPT)
 
-lock:
-	$(AVRDUDE) $(LOCKOPT)
+#lock:
+#	$(AVRDUDE) $(LOCKOPT)
 
-read_fuses:
-	$(UISP) --rd_fuses
+#read_fuses:
+#	$(UISP) --rd_fuses
 
 clean:
-	rm -f main.hex main.bin *.o usbdrv/*.o main.s usbdrv/oddebug.s usbdrv/usbdrv.s
+	rm -f main.hex main.elf $(OBJECTS) $(OBJECTS:.o=.s)
 
 # file targets:
-main.bin:	$(OBJECTS)
-	$(CC) $(CFLAGS) -o main.bin $(OBJECTS) $(LDFLAGS)
+main.elf:	$(OBJECTS)
+	$(CC) $(CFLAGS) -o main.elf $(OBJECTS) $(LDFLAGS)
 
-main.hex:	main.bin
+main.hex:	main.elf
 	rm -f main.hex main.eep.hex
-	avr-objcopy -j .text -j .data -O ihex main.bin main.hex
+	avr-objcopy -j .text -j .data -O ihex main.elf main.hex
 	avr-size main.hex
 
-disasm:	main.bin
-	avr-objdump -d main.bin
+disasm:	main.elf
+	avr-objdump -d main.elf
 
 cpp:
 	$(CC) $(CFLAGS) -E main.c
