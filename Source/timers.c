@@ -28,7 +28,6 @@
 void ReadTimers(report_t *reportBuffer)
 {
 	int		timer;
-	uchar	flag;
 
 	DDRB	&= 0b11000001;				// X1/Y1/X2/Y2/Button 2 as inputs
 	PORTB	|= 0b00111110;				// Pull-ups
@@ -36,8 +35,6 @@ void ReadTimers(report_t *reportBuffer)
 	DDRC	&= 0b11000010;				// B2/B3/B4 as inputs
 	DDRC	|= 0b00000010;				// Trigger as output
 	PORTC	|= 0b00111111;				// Pull-ups, trigger starts high
-
-	flag = 0;
 
 	PORTC	&= ~(1<<1);					// trigger low, starts timer
 	PORTC	|= (1<<1);					// trigger high again

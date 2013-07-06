@@ -36,17 +36,17 @@
 /* #include "pc-fx.h" */
 #include "dreamcast.h"
 
-static	void*			usbDeviceDescriptorAddress;
-static	int				usbDeviceDescriptorLength;
-static	report_t		reportBuffer;
-/* static	reportMouse_t	reportBufferMouse; */
-void*	reportBufferAddress;
-uchar	reportBufferLength;
-uchar	hidMode;
-void*	hidReportDescriptorAddress;
-int		hidReportDescriptorLength;
-uchar	hidNumReports;
-uchar	idleRate;
+static const void* usbDeviceDescriptorAddress;
+static int         usbDeviceDescriptorLength;
+static report_t    reportBuffer;
+/* static reportMouse_t   reportBufferMouse; */
+void*       reportBufferAddress;
+uchar       reportBufferLength;
+uchar       hidMode;
+const void* hidReportDescriptorAddress;
+int         hidReportDescriptorLength;
+uchar       hidNumReports;
+uchar       idleRate;
 
 const uchar hat_lut[] PROGMEM  = { -1, 0, 4, -1, 6, 7, 5, -1, 2, 1, 3, -1, -1, -1, -1, -1 };
 
