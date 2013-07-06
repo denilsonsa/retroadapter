@@ -5,7 +5,7 @@
 # Tabsize: 4
 # License: GNU GPL v2 (see License.txt)
 
-F_CPU = 16000000
+F_CPU = 12000000
 DEVICE = atmega8
 
 # where the updating firmware should be located (starting address)
@@ -37,7 +37,7 @@ LOCKOPT = -U lock:w:0x3f:m
 #please mail tests-reports to matrixstorm@gmx.de
 #
 #some features may be deactivated to fit into bootloader section
-#ATTANTION: CONFIG_NO... feature deactivation may not be optimal!
+#ATTENTION: CONFIG_NO... feature deactivation may not be optimal!
 
 FUSEOPT_16              = -U lfuse:w:0x1f:m -U hfuse:w:0xc0:m
 BOOTLOADER_ADDRESS_16   = 0x3800
@@ -98,9 +98,10 @@ DEFINES_2561             = #-DEMPTY
 
 # standard atmega8 needs BODLEVEL to be programed, since it is a 5V device
 # you may also want to UNprogram  SUT1 to get a SLOWER bootup (lfuse then would be 0x3f)
-FUSEOPT_8            = -U lfuse:w:0x1f:m -U hfuse:w:0xc0:m
+#FUSEOPT_8            = -U lfuse:w:0x1f:m -U hfuse:w:0xc0:m
+FUSEOPT_8            = -U lfuse:w:0x9f:m -U hfuse:w:0xc0:m
 BOOTLOADER_ADDRESS_8 = 0x1800
-DEFINES_8            = -DCONFIG_USE__EXCESSIVE_ASSEMBLER -DCONFIG_NO__NEED_WATCHDOG -DCONFIG_NO__PRECISESLEEP
+DEFINES_8            = -DCONFIG_USE__EXCESSIVE_ASSEMBLER -DCONFIG_NO__NEED_WATCHDOG -DCONFIG_NO__PRECISESLEEP -DCONFIG_NO__EEPROM_PAGED_ACCESS
 
 
 

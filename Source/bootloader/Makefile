@@ -21,7 +21,7 @@ include Makefile.inc
 CFLAGS = -Wall -Os -fno-move-loop-invariants -fno-tree-scev-cprop -fno-inline-small-functions -I. -mmcu=$(DEVICE) -DBOOTLOADER_ADDRESS=$(BOOTLOADER_ADDRESS) -DF_CPU=$(F_CPU) $(DEFINES)
 LDFLAGS = -Wl,--relax,--gc-sections -Wl,--section-start=.text=$(BOOTLOADER_ADDRESS) -Wl,--defsym=nullVector=0
 
-OBJECTS =  usbdrv/usbdrvasm.o usbdrv/oddebug.o main.o
+OBJECTS =  ../usbdrv/usbdrvasm.o ../usbdrv/oddebug.o main.o
 
 # symbolic targets:
 all: main.hex
@@ -90,14 +90,10 @@ main.hex:	main.bin
 	$(RM) main.hex main.eep.hex
 	$(OBC) -j .text -j .data -O ihex main.bin main.hex
 	$(ECHO) "."
-	$(ECHO) "."
-	$(ECHO) "."
-	$(ECHO) "!!!ATTANTION!!!"
+	$(ECHO) "!!!ATTENTION!!!"
 	$(ECHO) "(data+text) MUST fit into your MCUs bootloader section"
 	$(ECHO) "."
-	$(SIZ) --mcu $(DEVICE) main.bin
-	$(ECHO) "."
-	$(ECHO) "."
+	$(SIZ) main.bin
 	$(ECHO) "."
 
 disasm:	main.bin

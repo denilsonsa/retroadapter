@@ -71,7 +71,7 @@ these macros are defined, the boot loader usees them.
 
 #ifndef USB_CFG_DMINUS_BIT
   /* This is Revision 3 and later (where PD6 and PD7 were swapped */
-  #define USB_CFG_DMINUS_BIT      7    /* Rev.2 and previous was 6 */
+  #define USB_CFG_DMINUS_BIT      1    /* Rev.2 and previous was 6 */
 #endif
 /* This is the bit number in USB_CFG_IOPORT where the USB D- line is connected.
  * This may be any bit in the port.
@@ -340,24 +340,34 @@ these macros are defined, the boot loader usees them.
  * following commands and macros may not be evaluated properly when 'USE_EXCESSIVE_ASSEMBLER"
  */
 
+#include <util/delay.h>
 static inline void  bootLoaderInit(void)
 {
-    PIN_DDR(JUMPER_PORT)  = 0;
-    PIN_PORT(JUMPER_PORT) = (1<< PIN(JUMPER_PORT, JUMPER_BIT)); /* activate pull-up */
+	DDRD	&= 0b10000110;	// All inputs except Select, don't touch USB D+/-
+	PORTD	|= 0b01111001;	// Pull-ups
+	DDRD	|= 0b10000000;	// Select as output
+	PORTD	&= 0b01111111;	// Select starts low
 
-//     deactivated by Stephan - reset after each avrdude op is annoing!
-//     if(!(MCUCSR & (1 << EXTRF)))    /* If this was not an external reset, ignore */
-//         leaveBootloader();
+
+	DDRB	&= 0b11000001;	// DB15 inputs
+	PORTB	|= 0b00111110;	// Pull-ups
+	DDRC	|= (1<<2);		// PC2 (Select) output
+	PORTC	&= ~(1<<2);		// Select starts low
+
+	_delay_us(14);			// The custom chip in Megadrive 6 button controllers is
+							// a bit slower than CMOS logic
 
     MCUCSR = 0;                     /* clear all reset flags for next time */
 }
 
 static inline void  bootLoaderExit(void)
 {
-    PIN_PORT(JUMPER_PORT) = 0;		/* undo bootLoaderInit() changes */
+    PORTD = 0;                      /* undo bootLoaderInit() changes */
+    PORTB = 0;                      /* undo bootLoaderInit() changes */
 }
 
-#define bootLoaderCondition()		((PIN_PIN(JUMPER_PORT) & (1 << PIN(JUMPER_PORT, JUMPER_BIT))) == 0)
+// Mega Drive P1/P2 button A
+#define bootLoaderCondition()   ( !(PIND & (1<<6)) || !(PINB & (1<<1)) )
 
 #endif /* __ASSEMBLER__ */
 

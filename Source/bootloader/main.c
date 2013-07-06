@@ -42,7 +42,7 @@
 
 
 #include "bootloaderconfig.h"
-#include "usbdrv/usbdrv.c"
+#include "../usbdrv/usbdrv.c"
 
 #ifndef BOOTLOADER_ADDRESS
   #error need to know the bootloaders flash address!
