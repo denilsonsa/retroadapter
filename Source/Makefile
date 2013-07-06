@@ -109,7 +109,7 @@ size-detailed: ${TARGET}
 
 writeflash:
 	$(AVRDUDE) $(AVRDUDE_PARAMS) \
-		-U flash:w:RetroAdapterV2.hex:i
+		-D -U flash:w:RetroAdapterV2.hex:i
 
 writefuse:
 	$(AVRDUDE) $(AVRDUDE_PARAMS) \

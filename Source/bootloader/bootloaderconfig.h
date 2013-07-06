@@ -90,7 +90,7 @@ these macros are defined, the boot loader usees them.
  * signature) does not support page mode for EEPROM. It is required for
  * accessing the EEPROM on the ATMega8. Costs ~54 bytes.
  */
-#define BOOTLOADER_CAN_EXIT         1
+#define BOOTLOADER_CAN_EXIT         0
 /* If this macro is defined to 1, the boot loader will exit shortly after the
  * programmer closes the connection to the device. Costs ~36 bytes.
  */
@@ -135,22 +135,29 @@ these macros are defined, the boot loader usees them.
 
 static inline void  bootLoaderInit(void)
 {
-	DDRD	&= ~(1<<6);		// Mega Drive P1 button B
-    PORTD	|= (1<<6);		// pull up
+	DDRD	&= 0b10000110;	// All inputs except Select, don't touch USB D+/-
+	PORTD	|= 0b01111001;	// Pull-ups
+	DDRD	|= 0b10000000;	// Select as output
+	PORTD	&= 0b01111111;	// Select starts low
 
-	DDRC	&= ~(1<<7);		// Mega Drive P2 button B
-	PORTC	|= (1<<7);		// pull up
 
-	_delay_us(10);  /* wait for levels to stabilize */
+	DDRB	&= 0b11000001;	// DB15 inputs
+	PORTB	|= 0b00111110;	// Pull-ups
+	DDRC	|= (1<<2);		// PC2 (Select) output
+	PORTC	&= ~(1<<2);		// Select starts low
+
+	_delay_us(14);			// The custom chip in Megadrive 6 button controllers is
+							// a bit slower than CMOS logic
 }
 
 static inline void  bootLoaderExit(void)
 {
     PORTD = 0;                      /* undo bootLoaderInit() changes */
-    PORTC = 0;                      /* undo bootLoaderInit() changes */
+    PORTB = 0;                      /* undo bootLoaderInit() changes */
 }
 
-#define bootLoaderCondition()   ( !(PIND & (1<<6)) || !(PINC & (1<<7)) )
+// Mega Drive P1/P2 buttons A/B
+#define bootLoaderCondition()   ( !(PIND & (1<<6)) || !(PINB & (1<<1)) )
 
 #endif /* __ASSEMBLER__ */
 
