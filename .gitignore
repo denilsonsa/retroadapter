@@ -1,4 +1,3 @@
-syntax: glob
 # Temporary and backup files:
 \#*#
 .*~
