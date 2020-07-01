@@ -20,7 +20,7 @@ to make small changes to the RetroAdapter code. These changes are saved in this
 repository.
 
 The Makefile changes mostly come from my previous project:
-http://bitbucket.org/denilsonsa/atmega8-magnetometer-usb-mouse/src/tip/firmware/Makefile
+https://github.com/denilsonsa/atmega8-magnetometer-usb-mouse/blob/master/firmware/Makefile
 
 My blog post about this project:
 http://denilson.sa.nom.br/blog/2013-07-15/i-built-a-retroadapter
