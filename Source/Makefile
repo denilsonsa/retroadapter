@@ -100,6 +100,7 @@ $(TARGET): $(OBJECTS) dreamcast_asm.o n64gc_asm.o RetroAdapterV2.c direct.c drea
 
 size: ${TARGET}
 	avr-size --format=sysv --radix=10 $(TARGET)
+	./checksize $(TARGET)
 
 size-detailed: ${TARGET}
 	@avr-nm -f bsd -t d -A --size-sort $(TARGET) | \

@@ -1,0 +1,104 @@
+#!/bin/sh
+# Name: checksize
+# Project: AVR-USB
+# Author: Christian Starkjohann
+# Creation Date: 2004-12-29
+# Tabsize: 4
+# Copyright: (c) 2005 OBJECTIVE DEVELOPMENT Software GmbH.
+# Revision: $Id: checksize 110 2006-02-07 21:26:09Z cs $
+#
+# This file has been copied from atmega8-magnetometer-usb-mouse,
+# which copied it from HIDKeys.2007-03-29.tar.gz
+# https://github.com/denilsonsa/atmega8-magnetometer-usb-mouse/blob/master/firmware/checksize
+
+
+if [ -z "$1" ]; then
+	echo "Usage: ./checksize filename.elf"
+	exit
+elif [ ! -f "$1" ]; then
+	echo "File '$1' was not found"
+	exit
+fi
+
+
+# ATmega8 has 8K of flash and 1K of RAM
+codelimit=8192
+datalimit=960   # leave 64 bytes for stack
+eepromlimit=512
+
+error=0
+
+if [ $# -gt 1 ]; then
+	codelimit="$2"
+fi
+if [ $# -gt 2 ]; then
+	datalimit="$3"
+fi
+if [ $# -gt 3 ]; then
+	eepromlimit="$4"
+fi
+
+
+# $ avr-size --format=berkley --radix=10 main.elf
+#    text    data     bss     dec     hex filename
+#    5536      36     276    5848    16d8 main.elf
+#
+# $ avr-size --format=sysv --radix=10 main.elf
+# main.elf  :
+# section   size      addr
+# .text     5536         0
+# .data        4   8388704
+# .bss       276   8388708
+# .eeprom     32   8454144
+# Total     5848
+#
+#
+# The total amount of data to Flash ROM is text+data.
+# The total amount of RAM (global and static vars only) is data+bss.
+#
+# See also: http://www.nongnu.org/avr-libc/user-manual/mem_sections.html
+
+set -- $( avr-size --format=sysv --radix=10 "$1" |
+	awk 'BEGIN {
+			section[".text"] = 0;
+			section[".bss"] = 0;
+			section[".data"] = 0;
+			section[".eeprom"] = 0;
+		}
+		/^\.[a-z]/ {
+			section[$1] = $2;
+		}
+		END {
+			print \
+				section[".text"] + section[".data"], \
+				section[".data"] + section[".bss"], \
+				section[".data"], \
+				section[".eeprom"];
+		}'
+)
+
+if [ "$1" -gt "$codelimit" ]; then
+	extramsg=" - SIZE LIMIT EXCEEDED!"
+	error=1
+else
+	extramsg=""
+fi
+echo "ROM: $1 bytes (data=$3) / max=${codelimit}${extramsg}"
+
+if [ "$2" -gt "$datalimit" ]; then
+	extramsg=" - SIZE LIMIT EXCEEDED!"
+	error=1
+else
+	extramsg=""
+fi
+echo "RAM: $2 bytes / max=${datalimit}${extramsg}"
+
+if [ "$4" -gt "$eepromlimit" ]; then
+	extramsg=" - SIZE LIMIT EXCEEDED!"
+	error=1
+else
+	extramsg=""
+fi
+echo "EEPROM: $4 bytes / max=${eepromlimit}${extramsg}"
+
+exit $error
