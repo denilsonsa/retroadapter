@@ -43,6 +43,8 @@ LDFLAGS += -Wl,--relax
 AVRDUDE = avrdude
 AVRDUDE_PARAMS = -c usbasp
 AVRDUDE_PARAMS += -p $(MCU)
+
+# Please look at "fuses.md" for understanding this:
 AVRDUDE_PARAMS_FUSE = -U hfuse:w:0xC1:m -U lfuse:w:0x9F:m
 
 
