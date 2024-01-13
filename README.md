@@ -14,6 +14,7 @@ This is basically the RetroAdapter version 2.1a with these changes:
 
 * some tweaks in the Makefile,
 * an updated usbdrv,
+* some bugfixes in the main firmware (corrected some button mappings),
 * many modules disabled (because I'll never use them, and to reduce the size of the firmware),
 * a few conditionals hardcoded (because my hardware only supports one kind of controller),
 * optional bootloader changed (or updated) from bootloadHID to USBaspLoader.
