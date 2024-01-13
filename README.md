@@ -57,10 +57,10 @@ necessary software tools, you can dig into this repository:
 
 * [fuses.md](fuses.md) - Lists what are the expected Fuse values to be
   programmed into the microcontroller.
-* [Hardware/](Hardware/) - Schematics of the original RetroAdapter and also for
+* [hardware/](hardware/) - Schematics of the original RetroAdapter and also for
   the ATmega8 version.
-* [Source/](Source/) - The entire source-code for the firmware and for the
-  optional bootloader. Includes a [Makefile](Source/Makefile) which can be used
+* [source/](source/) - The entire source-code for the firmware and for the
+  optional bootloader. Includes a [Makefile](source/Makefile) which can be used
   to build the firmware, write it to the microcontroller, and also write the
   fuse bytes.
 * [more_docs/](more_docs/) - Further documentation on the RetroAdapter, saved
